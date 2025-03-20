@@ -1,0 +1,26 @@
+/* Tailwind CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 253, 247; /* #fffdf7 converted to RGB */
+  --primary-rgb: 0, 41, 107; /* #00296b converted to RGB */
+  --secondary-rgb: 0, 80, 157; /* #00509d converted to RGB */
+  --tertiary-rgb: 253, 197, 0; /* #fdc500 converted to RGB */
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+/* Animation utility classes */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+} 
