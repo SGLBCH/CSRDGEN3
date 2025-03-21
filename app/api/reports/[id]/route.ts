@@ -364,4 +364,7 @@ export async function DELETE(
       { status: 500 }
     )
   }
-} 
+}
+
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs'; 

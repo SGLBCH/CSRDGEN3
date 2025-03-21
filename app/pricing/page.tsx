@@ -2,11 +2,12 @@
 
 import Navigation from '../components/Navigation'
 import { useUser } from '@auth0/nextjs-auth0/client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function Pricing() {
+// Create a client component that uses useSearchParams
+function PricingContent() {
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -243,5 +244,14 @@ export default function Pricing() {
         </div>
       </div>
     </main>
+  )
+}
+
+// Wrap the client component in Suspense 
+export default function Pricing() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white">Loading...</div>}>
+      <PricingContent />
+    </Suspense>
   )
 } 

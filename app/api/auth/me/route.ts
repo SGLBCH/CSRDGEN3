@@ -29,4 +29,7 @@ export async function GET(req: NextRequest) {
       error: 'Failed to retrieve user session' 
     }, { status: 500 });
   }
-} 
+}
+
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs'; 
