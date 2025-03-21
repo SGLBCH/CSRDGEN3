@@ -322,9 +322,7 @@ export async function POST(req: Request) {
   }
 }
 
-// Disable body parser
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-} 
+// This is the correct way to configure options in App Router
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+// Remove the old config export as it's not compatible with App Router 
