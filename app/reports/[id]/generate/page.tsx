@@ -312,7 +312,16 @@ Generate the CSRD report using only the provided information, omitting any data 
       
       let pageHeight = doc.internal.pageSize.height;
       
+      // Skip the first title from the content since we already added a custom title
+      let skipFirstTitle = true;
+      
       lines.forEach(line => {
+        // Skip the first title line (it starts with # and contains the report title)
+        if (skipFirstTitle && line.startsWith('# ')) {
+          skipFirstTitle = false; // Only skip the first occurrence
+          return;
+        }
+        
         // Check if it's a heading
         if (line.startsWith('# ')) {
           // Main heading
