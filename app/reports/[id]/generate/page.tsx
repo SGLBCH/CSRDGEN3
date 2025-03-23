@@ -289,10 +289,27 @@ Generate the CSRD report using only the provided information, omitting any data 
       // Generate PDF client-side using jsPDF
       const doc = new jsPDF();
       
+      // Add a properly formatted title that wraps if needed
+      doc.setFontSize(20);
+      doc.setFont('helvetica', 'bold');
+      
+      // Format title
+      const title = `Corporate Sustainability Reporting Directive (CSRD) Report: ${report?.title || ''}`;
+      const titleLines = doc.splitTextToSize(title, 170); // This will wrap the title if needed
+      let y = 20;
+      
+      // Add title lines
+      titleLines.forEach((line: string) => {
+        doc.text(line, 20, y);
+        y += 10;
+      });
+      
+      // Add some space after title
+      y += 5;
+      
       // Split content into lines
       const lines = generatedContent.split('\n');
       
-      let y = 20; // starting y position
       let pageHeight = doc.internal.pageSize.height;
       
       lines.forEach(line => {
