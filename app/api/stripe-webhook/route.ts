@@ -70,6 +70,7 @@ export async function POST(req: Request) {
       // Extract user information from metadata
       const userEmail = session.metadata?.userEmail
       const customerId = session.customer as string
+      const needsUserCreation = session.metadata?.needs_user_creation === 'true'
 
       if (!customerId) {
         console.error('[Webhook] Missing customer ID in session')
@@ -77,6 +78,76 @@ export async function POST(req: Request) {
           { error: 'Missing customer ID' },
           { status: 400 }
         )
+      }
+
+      console.log('[Webhook] Session details:', { 
+        userEmail,
+        customerId,
+        needsUserCreation,
+        metadata: session.metadata
+      })
+
+      // If the session indicates we need to create a user, attempt that first
+      if (needsUserCreation && userEmail) {
+        console.log('[Webhook] Session flagged for user creation')
+        try {
+          // First check if user already exists (might have been created after checkout started)
+          const { data: existingUser } = await supabaseAdmin
+            .from('users')
+            .select('*')
+            .or(`email.ilike.${userEmail},stripe_customer_id.eq.${customerId}`)
+            .maybeSingle()
+
+          if (existingUser) {
+            console.log('[Webhook] User already exists, updating:', existingUser)
+            // Update the existing user
+            const { error: updateError } = await supabaseAdmin
+              .from('users')
+              .update({
+                has_paid: true,
+                stripe_customer_id: customerId,
+                updated_at: new Date().toISOString()
+              })
+              .eq('id', existingUser.id)
+
+            if (updateError) {
+              console.error('[Webhook] Error updating existing user:', updateError)
+            } else {
+              console.log('[Webhook] Successfully updated existing user')
+            }
+          } else {
+            // User doesn't exist, create new one
+            console.log('[Webhook] Creating user from webhook with email:', userEmail)
+            const { data: newUser, error: createError } = await supabaseAdmin
+              .from('users')
+              .insert([
+                {
+                  email: userEmail,
+                  stripe_customer_id: customerId,
+                  has_paid: true,
+                  created_at: new Date().toISOString(),
+                  updated_at: new Date().toISOString()
+                }
+              ])
+              .select()
+
+            if (createError) {
+              console.error('[Webhook] Error creating user from webhook:', createError)
+              // Continue with normal flow, as we'll try other methods below
+            } else {
+              console.log('[Webhook] Successfully created user from webhook:', newUser)
+              // Set userData to the new user to skip other lookups
+              if (newUser && newUser.length > 0) {
+                const userData = newUser[0]
+                console.log('[Webhook] User created and payment status updated successfully')
+                return NextResponse.json({ received: true })
+              }
+            }
+          }
+        } catch (e) {
+          console.error('[Webhook] Error in webhook user creation:', e)
+          // Continue with normal flow, as we'll try other methods below
+        }
       }
 
       // Try to find user by email first
