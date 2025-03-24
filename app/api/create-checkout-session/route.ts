@@ -15,11 +15,12 @@ export async function POST(req: Request) {
 
     console.log('[Checkout] Creating session for:', { userId, userEmail })
 
-    // Check if user exists in Supabase
+    // Check if user exists in Supabase - using case-insensitive search
     const { data: existingUser, error: userError } = await supabase
       .from('users')
       .select('id, email, stripe_customer_id')
-      .eq('email', userEmail)
+      .ilike('email', userEmail) // Case-insensitive search
+      .limit(1) // Just get the first match
       .single()
 
     if (userError && userError.code !== 'PGRST116') {
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
       const customer = await stripe.customers.create({
         email: userEmail,
         metadata: {
-          supabase_user_id: userId
+          auth0_user_id: userId
         }
       })
       customerId = customer.id
@@ -63,58 +64,71 @@ export async function POST(req: Request) {
           )
         }
       } else {
-        // User doesn't exist in Supabase yet (rare case)
+        // User doesn't exist in Supabase yet (new Google account login)
         console.log('[Checkout] Creating new user in Supabase')
         
-        // First check if user with this email already exists (double-check)
-        const { data: emailCheck } = await supabase
+        // Try to create the user
+        const { data: newUser, error: createError } = await supabaseAdmin
           .from('users')
-          .select('id')
-          .eq('email', userEmail)
-        
-        if (emailCheck && emailCheck.length > 0) {
-          // User exists by email, update instead of insert
-          console.log('[Checkout] User exists by email, updating instead:', emailCheck[0].id)
-          const { error: updateError } = await supabaseAdmin
-            .from('users')
-            .update({ 
+          .insert([
+            {
+              email: userEmail,
               stripe_customer_id: customerId,
-              updated_at: new Date().toISOString()
-            })
-            .eq('id', emailCheck[0].id)
+              has_paid: false,
+              created_at: new Date().toISOString()
+            }
+          ])
+          .select()
 
-          if (updateError) {
-            console.error('[Checkout] Error updating existing user:', updateError)
+        if (createError) {
+          console.error('[Checkout] Error creating user:', createError)
+          
+          // Try a "get or create" approach with a second attempt
+          if (createError.code === '23505') { // Unique constraint violation
+            console.log('[Checkout] Duplicate key error. Trying to fetch existing user record.')
+            
+            // Try to get the existing user record
+            const { data: existingUserRetry, error: retryError } = await supabaseAdmin
+              .from('users')
+              .select('id')
+              .ilike('email', userEmail)
+              .limit(1)
+            
+            if (retryError || !existingUserRetry || existingUserRetry.length === 0) {
+              console.error('[Checkout] Failed to get existing user after constraint violation:', retryError)
+              return NextResponse.json(
+                { error: 'Failed to create or retrieve user record' },
+                { status: 500 }
+              )
+            }
+            
+            // Update the existing user record with the customer ID
+            const { error: updateError } = await supabaseAdmin
+              .from('users')
+              .update({ 
+                stripe_customer_id: customerId,
+                updated_at: new Date().toISOString()
+              })
+              .eq('id', existingUserRetry[0].id)
+            
+            if (updateError) {
+              console.error('[Checkout] Error updating existing user after retry:', updateError)
+              return NextResponse.json(
+                { error: 'Error updating user after retry' },
+                { status: 500 }
+              )
+            }
+            
+            console.log('[Checkout] Successfully updated existing user after retry')
+          } else {
+            // Not a duplicate key error, return the error
             return NextResponse.json(
-              { error: 'Error updating user in database' },
+              { error: 'Error creating user in database' },
               { status: 500 }
             )
           }
         } else {
-          // Create new user
-          const { error: createError } = await supabaseAdmin
-            .from('users')
-            .insert([
-              {
-                email: userEmail,
-                stripe_customer_id: customerId,
-                has_paid: false,
-                created_at: new Date().toISOString()
-              }
-            ])
-
-          if (createError) {
-            console.error('[Checkout] Error creating user:', createError)
-            // If we get a duplicate key error, the user was created in a race condition
-            if (createError.code === '23505') {
-              console.log('[Checkout] User was created in a race condition, proceeding with checkout')
-            } else {
-              return NextResponse.json(
-                { error: 'Error creating user in database' },
-                { status: 500 }
-              )
-            }
-          }
+          console.log('[Checkout] Successfully created new user:', newUser)
         }
       }
     } else {
