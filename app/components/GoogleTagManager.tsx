@@ -1,21 +1,11 @@
 'use client'
 
-import { useEffect } from 'react'
 import Script from 'next/script'
 
-interface GoogleTagManagerProps {
-  gtmId?: string
-}
-
-export default function GoogleTagManager({ gtmId = 'GTM-K9WG7SG8' }: GoogleTagManagerProps) {
-  useEffect(() => {
-    // Initialize dataLayer
-    window.dataLayer = window.dataLayer || []
-  }, [])
-
+export default function GoogleTagManager() {
   return (
     <>
-      {/* GTM Script - This would normally go in the head, but Next.js Script component handles this */}
+      {/* GTM Script - This gets added to the head */}
       <Script
         id="gtm-script"
         strategy="afterInteractive"
@@ -25,27 +15,24 @@ export default function GoogleTagManager({ gtmId = 'GTM-K9WG7SG8' }: GoogleTagMa
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','${gtmId}');
+          })(window,document,'script','dataLayer','GTM-K9WG7SG8');
           `
         }}
       />
-      
-      {/* GTM noscript iframe - This goes in the body */}
-      <noscript>
-        <iframe
-          src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
-          height="0"
-          width="0"
-          style={{ display: 'none', visibility: 'hidden' }}
-        />
-      </noscript>
     </>
   )
 }
 
-// Add this for TypeScript support
-declare global {
-  interface Window {
-    dataLayer: any[]
-  }
+// Separate component for the body part, which will be rendered directly in the layout
+export function GoogleTagManagerNoScript() {
+  return (
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-K9WG7SG8"
+        height="0"
+        width="0"
+        style={{ display: 'none', visibility: 'hidden' }}
+      />
+    </noscript>
+  )
 } 
