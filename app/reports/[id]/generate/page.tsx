@@ -128,11 +128,20 @@ export default function ReportGeneratePage({ params }: { params: { id: string } 
       setGeneratedContent(null)
       setError(null)
       
-      // Simulate progress
+      // Modified progress simulation to take approximately 45 seconds
+      // The progress will increase more slowly and more evenly distributed
       const progressInterval = setInterval(() => {
         setGenerationProgress(prev => {
-          const newProgress = prev + Math.random() * 10
-          return newProgress >= 100 ? 100 : newProgress
+          // Calculate a slower increment to make it take ~45 seconds
+          // We increment every 500ms, so we need 90 increments to reach 45 seconds
+          // Thus each increment should average around 1.1% to reach 100% in 45 seconds
+          const baseIncrement = 1.1;
+          // Add some variability but keep it much smaller than before
+          const randomFactor = Math.random() * 0.6; // Random between 0 and 0.6
+          const newProgress = prev + baseIncrement + randomFactor;
+          
+          // Cap at 95% until the actual content is ready
+          return newProgress >= 95 ? 95 : newProgress;
         })
       }, 500)
       
@@ -512,6 +521,13 @@ Generate the CSRD report using only the provided information, omitting any data 
                       <p className="text-xs text-gray-500">
                         Processing report data and generating formatted output...
                       </p>
+                      
+                      {/* Add bold warning message for AI generation */}
+                      {selectedFormat === 'ai' && (
+                        <p className="mt-2 font-bold text-sm text-gray-700">
+                          When using safe AI, it can take up to 1 minute. Do not close this window.
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}
