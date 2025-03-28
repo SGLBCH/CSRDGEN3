@@ -2,10 +2,10 @@
 
 import Script from 'next/script'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 
 // Component to track route changes and send pageview events
-export function PageViewTracker() {
+function PageViewTrackerInner() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   
@@ -28,6 +28,15 @@ export function PageViewTracker() {
   }, [pathname, searchParams])
   
   return null
+}
+
+// Wrap the PageViewTracker in a Suspense boundary
+export function PageViewTracker() {
+  return (
+    <Suspense fallback={null}>
+      <PageViewTrackerInner />
+    </Suspense>
+  )
 }
 
 export default function GoogleTagManager() {
