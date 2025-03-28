@@ -1,5 +1,6 @@
 import { handleAuth, handleCallback, handleLogin } from '@auth0/nextjs-auth0'
 import { supabase, supabaseAdmin } from '@/lib/supabaseClient'
+import { NextResponse } from 'next/server'
 
 // Interface for user data
 interface UserData {
@@ -137,6 +138,13 @@ const afterCallback = async (req: any, session: any) => {
           console.error('[Auth0 Callback] Error creating user in Supabase:', createError)
         } else {
           console.log('[Auth0 Callback] Successfully created user in Supabase:', newUser)
+          console.log('[Auth0 Callback] Setting new user cookie for conversion tracking')
+          const response = NextResponse.next()
+          response.cookies.set('newSignup', 'true', { 
+            maxAge: 60 * 5, // 5 minutes expiration
+            path: '/',
+            httpOnly: false // Needs to be readable by JavaScript
+          })
         }
       }
     } catch (error) {

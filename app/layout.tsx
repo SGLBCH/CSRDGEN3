@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import AuthProvider from './components/AuthProvider'
-import GoogleTagManager, { GoogleTagManagerNoScript } from './components/GoogleTagManager'
+import GoogleTagManager, { GoogleTagManagerNoScript, PageViewTracker } from './components/GoogleTagManager'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +23,10 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} bg-background`}>
         <GoogleTagManagerNoScript />
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <PageViewTracker />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )

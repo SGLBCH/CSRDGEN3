@@ -26,6 +26,13 @@ interface UserData {
   [key: string]: any; // Allow other properties
 }
 
+// Add TypeScript declaration for dataLayer
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
+
 const metrics = [
   {
     name: 'Reports in Progress',
@@ -117,6 +124,32 @@ export default function Dashboard() {
       checkPaymentStatus();
     }
   }, [user, isLoading, email, router]);
+
+  // Inside your component, add this useEffect
+  useEffect(() => {
+    // Check for newSignup cookie
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+      return null;
+    }
+    
+    const newSignupCookie = getCookie('newSignup');
+    
+    if (newSignupCookie === 'true') {
+      // Push signup conversion to dataLayer for Google Ads tracking
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'signup_complete'
+        });
+        console.log('Signup conversion tracked');
+      }
+      
+      // Clear the cookie so we don't track again
+      document.cookie = 'newSignup=; Max-Age=-99999999; path=/';
+    }
+  }, []);
 
   if (isLoading) return (
     <div className="min-h-screen bg-gray-50">

@@ -1,10 +1,49 @@
 'use client'
 
 import Script from 'next/script'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
+
+// Component to track route changes and send pageview events
+export function PageViewTracker() {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  
+  useEffect(() => {
+    if (pathname) {
+      // Construct the full URL
+      const queryString = searchParams?.toString()
+      const url = queryString ? `${pathname}?${queryString}` : pathname
+      
+      // Push the pageview to dataLayer
+      window.dataLayer?.push({
+        event: 'page_view',
+        page_path: pathname,
+        page_url: url,
+        page_title: document.title
+      })
+      
+      console.log('Page view tracked:', pathname)
+    }
+  }, [pathname, searchParams])
+  
+  return null
+}
 
 export default function GoogleTagManager() {
   return (
     <>
+      {/* Initialize dataLayer before GTM */}
+      <Script
+        id="gtm-dataLayer-init"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          `
+        }}
+      />
+      
       {/* GTM Script - This gets added to the head */}
       <Script
         id="gtm-script"
