@@ -6,6 +6,13 @@ import { useState, useEffect, Suspense } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 import { useRouter, useSearchParams } from 'next/navigation'
 
+// Add TypeScript declaration for dataLayer
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
+
 // Create a client component that uses useSearchParams
 function PricingContent() {
   const { user } = useUser()
@@ -20,6 +27,17 @@ function PricingContent() {
     const sessionId = searchParams.get('session_id')
     if (sessionId) {
       setSuccess(true)
+      
+      // Push purchase conversion to dataLayer for Google Ads tracking
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'purchase_complete',
+          'conversionValue': 199.00, // Your one-time purchase price
+          'currency': 'EUR'
+        });
+        console.log('Purchase conversion tracked:', sessionId);
+      }
+      
       // Redirect to dashboard after a short delay
       setTimeout(() => {
         router.push('/dashboard')
