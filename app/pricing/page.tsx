@@ -185,6 +185,12 @@ function PricingContent() {
               >
                 View Pricing
               </a>
+              <a
+                href="#faq"
+                className="ml-4 rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-primary-700 shadow-sm ring-1 ring-inset ring-primary-700 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+              >
+                FAQ
+              </a>
             </div>
           </div>
         </div>
@@ -258,6 +264,135 @@ function PricingContent() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Additional FAQ button below pricing card */}
+      <div className="bg-gray-50 pb-16 flex justify-center">
+        <a
+          href="#faq"
+          className="rounded-md bg-white px-4 py-2.5 text-sm font-semibold text-primary-700 shadow-sm ring-1 ring-inset ring-primary-700 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+        >
+          View Frequently Asked Questions
+        </a>
+      </div>
+
+      {/* FAQ Section */}
+      <div id="faq" className="bg-white py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="text-base font-semibold leading-7 text-primary-600">FAQ</h2>
+            <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+              Frequently Asked Questions
+            </p>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Find answers to common questions about our CSRD reporting platform.
+            </p>
+          </div>
+          
+          <div className="mx-auto mt-16 max-w-3xl divide-y divide-gray-200">
+            <dl className="space-y-8 divide-y divide-gray-200">
+              {/* Question 1 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  What happens after I pay?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  As soon as your payment is confirmed, you'll get immediate access to our platform. From there, you can start your CSRD report using our guided process and templates.
+                </dd>
+              </div>
+              
+              {/* Question 2 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  How long does it take to complete a report?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  On average, most users complete their CSRD report in 3–5 hours. It depends on how much data you already have available.
+                </dd>
+              </div>
+              
+              {/* Question 3 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  Is there a refund policy?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  Yes! We offer a 7-day money-back guarantee. If you're not satisfied for any reason, just reach out and we'll issue a full refund—no questions asked.
+                </dd>
+              </div>
+              
+              {/* Question 4 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  Is my data safe and secure?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  Absolutely. We use industry-standard encryption and comply with GDPR regulations to ensure your data is private and secure.
+                </dd>
+              </div>
+              
+              {/* Question 5 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  Can I update or edit my report later?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  Yes. You can make unlimited edits before finalizing and exporting your report. Your data remains saved and accessible.
+                </dd>
+              </div>
+              
+              {/* Question 6 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  Who is this for?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  Our platform is designed for small to medium-sized businesses that need to comply with CSRD but don't have an in-house sustainability team.
+                </dd>
+              </div>
+              
+              {/* Question 7 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  Do I need any prior knowledge of CSRD?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  Nope. We walk you through the entire process step-by-step, with guidance and tips along the way—even if you're totally new to CSRD.
+                </dd>
+              </div>
+              
+              {/* Question 8 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  Do you offer support if I get stuck?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  Yes! You can reach our team via email. We're here to help if you hit a roadblock or have questions.
+                </dd>
+              </div>
+              
+              {/* Question 9 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  What formats can I export the report in?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  You can export your final report in PDF, Word and Text format, ready for internal use or external submission.
+                </dd>
+              </div>
+              
+              {/* Question 10 */}
+              <div className="pt-8 pb-8">
+                <dt className="text-lg font-medium text-gray-900">
+                  Is there a subscription or hidden fees?
+                </dt>
+                <dd className="mt-4 text-base text-gray-600">
+                  No subscriptions, no hidden costs. You pay once for your report—simple as that.
+                </dd>
+              </div>
+            </dl>
           </div>
         </div>
       </div>

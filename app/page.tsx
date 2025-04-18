@@ -1,8 +1,12 @@
+'use client';
+
 import Navigation from './components/Navigation'
 import Link from 'next/link'
-import { ChartBarIcon, DocumentTextIcon, ShieldCheckIcon, ArrowRightIcon, UserIcon, CreditCardIcon, ClipboardDocumentCheckIcon, EyeIcon, SparklesIcon, ShareIcon, StarIcon } from '@heroicons/react/24/outline'
+import { ChartBarIcon, DocumentTextIcon, ShieldCheckIcon, ArrowRightIcon, UserIcon, CreditCardIcon, ClipboardDocumentCheckIcon, EyeIcon, SparklesIcon, ShareIcon, StarIcon, DocumentIcon } from '@heroicons/react/24/outline'
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid'
 import DiscountForm from './components/DiscountForm'
+import PdfPreviewModal from './components/PdfPreviewModal'
+import { useState } from 'react'
 
 const features = [
   {
@@ -105,6 +109,8 @@ const footerNavigation = [
 ];
 
 export default function Home() {
+  const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
+
   return (
     <main className="min-h-screen bg-background">
       <Navigation />
@@ -117,7 +123,7 @@ export default function Home() {
         </div>
         
         {/* Grid pattern overlay */}
-        <div className="absolute inset-0 -z-10 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'%3E%3Cg fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'1\'%3E%3Cpath opacity=\'.5\' d=\'M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
+        <div className="absolute inset-0 -z-10 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'%3E%3Cg fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'1\'%3E%3Cpath opacity=\'.5\' d=\'M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
         
         {/* Floating shapes */}
         <div className="absolute top-10 right-10 w-56 h-56 bg-tertiary-100 rounded-full mix-blend-multiply opacity-10 animate-blob animation-delay-2000"></div>
@@ -189,6 +195,83 @@ export default function Home() {
       <div className="px-6 py-8 lg:hidden">
         <div className="mx-auto max-w-md">
           <DiscountForm />
+        </div>
+      </div>
+      
+      {/* Sample Report Section */}
+      <div className="py-16 bg-primary-50">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+            {/* Left Column - Text Content */}
+            <div>
+              <div className="mx-auto max-w-2xl lg:mx-0 text-center lg:text-left">
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                  See What a CSRD Report Looks Like
+                </h2>
+                <p className="mt-4 text-lg leading-8 text-gray-600">
+                  Get a preview of our professionally formatted CSRD reports before you start. View a sample report to understand the comprehensive and compliant structure.
+                </p>
+                <div className="mt-8">
+                  <button
+                    onClick={() => setIsPdfModalOpen(true)}
+                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  >
+                    <DocumentIcon className="h-5 w-5 mr-2" />
+                    See a sample report
+                  </button>
+                </div>
+              </div>
+              
+              <div className="mt-12">
+                <div className="relative rounded-lg shadow-lg overflow-hidden max-w-2xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary-100 to-tertiary-100 opacity-90"></div>
+                  <div className="relative p-8 flex flex-col md:flex-row items-center gap-6">
+                    <div className="flex-shrink-0">
+                      <DocumentIcon className="h-16 w-16 text-primary-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Professional CSRD Reports</h3>
+                      <p className="text-gray-600 mb-4">Our platform generates comprehensive reports that meet all CSRD requirements, providing stakeholders with transparent sustainability information.</p>
+                      <button
+                        onClick={() => setIsPdfModalOpen(true)}
+                        className="text-primary-600 font-medium hover:text-primary-500 flex items-center"
+                      >
+                        Preview sample <ArrowRightIcon className="ml-1 h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Right Column - Image */}
+            <div className="mt-12 lg:mt-0 flex justify-center lg:justify-end">
+              <div className="max-w-md transform transition duration-500 hover:scale-105">
+                <div className="relative rounded-xl shadow-xl overflow-hidden border-8 border-white bg-white">
+                  {/* Border effect with a subtle gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary-100 to-tertiary-100 opacity-10"></div>
+                  
+                  {/* Image */}
+                  <img 
+                    src="/images/csrd-team.jpg" 
+                    alt="Team celebrating CSRD compliance" 
+                    className="w-full h-auto"
+                  />
+                  
+                  {/* Caption */}
+                  <div className="absolute bottom-0 inset-x-0 bg-white bg-opacity-90 p-4 border-t border-gray-100">
+                    <p className="text-center text-sm font-medium text-gray-800">
+                      Our clients achieve CSRD compliance with confidence
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Decorative elements */}
+                <div className="absolute -bottom-3 -right-3 h-16 w-16 rounded-full bg-tertiary-100 -z-10"></div>
+                <div className="absolute -top-3 -left-3 h-12 w-12 rounded-full bg-primary-100 -z-10"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -397,6 +480,13 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* PDF Preview Modal */}
+      <PdfPreviewModal 
+        isOpen={isPdfModalOpen} 
+        onClose={() => setIsPdfModalOpen(false)} 
+        pdfPath="/Documents/my-company-2025-preview.pdf" 
+      />
     </main>
   )
 } 

@@ -196,6 +196,28 @@ export default function ReportsPage() {
                 </a>
               </div>
             </div>
+            
+            {/* New member information section */}
+            <div className="mt-8 rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm">
+              <h3 className="text-base font-medium text-gray-900">Not a member yet?</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Discover how our CSRD reporting tool can help your business meet sustainability reporting requirements efficiently and affordably.
+              </p>
+              <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href="/pricing"
+                  className="inline-flex items-center rounded-md bg-primary-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-800"
+                >
+                  View Pricing
+                </a>
+                <a
+                  href="/pricing#faq"
+                  className="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium text-primary-700 shadow-sm ring-1 ring-inset ring-primary-700 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+                >
+                  Read FAQ
+                </a>
+              </div>
+            </div>
           </div>
         </main>
       </div>
