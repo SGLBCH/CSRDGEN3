@@ -35,10 +35,10 @@ export default function AboutPage() {
             </div>
             <div className="bg-white shadow rounded-lg p-8">
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                My name is Scott Golbach, and as the manager of a small-to-medium enterprise in the Netherlands, I understand the challenges businesses face when it comes to sustainability reporting. I recognized that many companies struggle with knowing where to start, which often leads to lengthy, complicated processes. That's why I developed this CSRD reporting tool—to simplify data collection and streamline the reporting process.
+                As a team deeply involved in managing small-to-medium enterprises in the Netherlands, we understand the challenges businesses face with sustainability reporting. Many companies struggle to know where to begin, often resulting in time-consuming and complex processes. That's why this CSRD reporting tool was developed—to simplify data collection and streamline the entire reporting journey.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                By reducing the time and effort required, our platform enables businesses to efficiently meet their CSRD obligations while focusing on what they do best. Our solution is built on the latest information provided by the EU and its CSRD department, and the positive feedback from accountants who review CSRD reports confirms its value.
+                By minimizing the time and effort required, our platform helps businesses efficiently meet their CSRD obligations, allowing them to stay focused on what they do best. The solution is based on the latest guidance from the EU and its CSRD department, and has received positive feedback from accountants who assess CSRD reports, confirming its effectiveness and value.
               </p>
             </div>
           </div>
@@ -101,7 +101,7 @@ export default function AboutPage() {
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">Expert Support</h3>
                   <p className="text-gray-700">
-                    In developing this platform, I consulted with experienced accountants and sustainability experts. Their enthusiastic feedback and support have been integral to our tool's success. Our system not only simplifies reporting but also provides ongoing guidance so you can maintain high standards in your sustainability disclosures.
+                    In developing this platform, we consulted with experienced accountants and sustainability experts. Their enthusiastic feedback and support have been integral to our tool's success. Our system not only simplifies reporting but also provides ongoing guidance so you can maintain high standards in your sustainability disclosures.
                   </p>
                 </div>
               </div>
@@ -192,7 +192,7 @@ export default function AboutPage() {
                     className="inline-flex items-center px-6 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-primary-600"
                   >
                     <EnvelopeIcon className="h-5 w-5 mr-2" />
-                    Contact Me
+                    Contact Us
                   </a>
                 </div>
               </div>
