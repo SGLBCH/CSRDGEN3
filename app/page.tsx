@@ -1,6 +1,7 @@
 import Navigation from './components/Navigation'
 import Link from 'next/link'
-import { ChartBarIcon, DocumentTextIcon, ShieldCheckIcon, ArrowRightIcon, UserIcon, CreditCardIcon, ClipboardDocumentCheckIcon, EyeIcon, SparklesIcon, ShareIcon } from '@heroicons/react/24/outline'
+import { ChartBarIcon, DocumentTextIcon, ShieldCheckIcon, ArrowRightIcon, UserIcon, CreditCardIcon, ClipboardDocumentCheckIcon, EyeIcon, SparklesIcon, ShareIcon, StarIcon } from '@heroicons/react/24/outline'
+import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid'
 import DiscountForm from './components/DiscountForm'
 
 const features = [
@@ -18,6 +19,33 @@ const features = [
     name: 'Compliance Assurance',
     description: 'Stay compliant with EU sustainability reporting directives.',
     icon: ShieldCheckIcon,
+  },
+]
+
+const testimonials = [
+  {
+    name: 'Sandra van der Berg',
+    role: 'Sustainability Manager',
+    company: 'GreenTech Solutions',
+    image: '/company-logos/greentech.svg',
+    content: 'The CSRD Report Generator transformed our sustainability reporting process. What used to take weeks now takes days, and the quality of our reports has improved significantly.',
+    rating: 5,
+  },
+  {
+    name: 'Thomas Hendricks',
+    role: 'CEO',
+    company: 'Hendricks Manufacturing',
+    image: '/company-logos/hendricks.svg',
+    content: 'As a manufacturing SME, we were worried about the complexity of CSRD compliance. This tool provided exactly what we needed - a straightforward path to professional reporting.',
+    rating: 5,
+  },
+  {
+    name: 'Julia Martens',
+    role: 'Finance Director',
+    company: 'EcoFresh Foods',
+    image: '/company-logos/ecofresh.svg',
+    content: 'The guidance and structure provided by this platform helped us navigate CSRD requirements with confidence. Our stakeholders have been impressed with the results.',
+    rating: 4,
   },
 ]
 
@@ -164,6 +192,61 @@ export default function Home() {
         </div>
       </div>
       
+      {/* Testimonials Section */}
+      <div className="py-24 bg-gray-50">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center mb-16">
+            <h2 className="text-base font-semibold leading-7 text-primary-600">Testimonials</h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              What Our Clients Say
+            </p>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Hear from businesses that have transformed their CSRD reporting process using our platform.
+            </p>
+          </div>
+          
+          <div className="mx-auto mt-12 max-w-7xl">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+              {testimonials.map((testimonial) => (
+                <div 
+                  key={testimonial.name} 
+                  className="relative rounded-2xl bg-white p-6 shadow-md transition hover:shadow-lg overflow-hidden border border-gray-100"
+                >
+                  {/* Logo and Rating */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="h-12 w-12 overflow-hidden rounded">
+                      <img 
+                        src={testimonial.image} 
+                        alt={`${testimonial.company} logo`} 
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        i < testimonial.rating ? (
+                          <StarIconSolid key={i} className="h-5 w-5 text-yellow-400" />
+                        ) : (
+                          <StarIcon key={i} className="h-5 w-5 text-gray-300" />
+                        )
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <p className="text-gray-700 mb-6 italic">"{testimonial.content}"</p>
+                  
+                  {/* Author */}
+                  <div className="mt-auto">
+                    <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
+                    <p className="text-sm text-gray-600">{testimonial.role}, {testimonial.company}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* How It Works Section */}
       <div className="relative -mt-1">
         <div className="bg-secondary-500 relative py-16 sm:py-24 -mt-1 border-t-0" style={{ marginTop: '-1px' }}>
